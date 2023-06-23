@@ -593,10 +593,9 @@ babel_update_cost(struct babel_neighbor *nbr)
   if (!rcv || !nbr->ifa->up)
     goto done;
 
-  switch (cf->type)
+  switch (cf->link_quality)
   {
-  case BABEL_IFACE_TYPE_WIRED:
-  case BABEL_IFACE_TYPE_TUNNEL:
+  case BABEL_IFACE_LINK_QUALITY_NONE:
     /* k-out-of-j selection - Appendix 2.1 in the RFC. */
 
     /* Link is bad if less than cf->limit/16 of expected hellos were received */
@@ -606,8 +605,7 @@ babel_update_cost(struct babel_neighbor *nbr)
     rxcost =  cf->rxcost;
     txcost = nbr->txcost;
     break;
-
-  case BABEL_IFACE_TYPE_WIRELESS:
+  case BABEL_IFACE_LINK_QUALITY_ETX:
     /*
      * ETX - Appendix 2.2 in the RFC.
      *

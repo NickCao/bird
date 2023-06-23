@@ -118,6 +118,13 @@ enum babel_iface_type {
   BABEL_IFACE_TYPE_MAX
 };
 
+enum babel_iface_link_quality {
+  BABEL_IFACE_LINK_QUALITY_UNDEF	= 0,
+  BABEL_IFACE_LINK_QUALITY_NONE	= 1,
+  BABEL_IFACE_LINK_QUALITY_ETX		= 2,
+  BABEL_IFACE_LINK_QUALITY_MAX
+};
+
 enum babel_ae_type {
   BABEL_AE_WILDCARD		= 0,
   BABEL_AE_IP4			= 1,
@@ -145,6 +152,7 @@ struct babel_iface_config {
   u8 type;
   u8 limit;				/* Minimum number of Hellos to keep link up */
   u8 check_link;
+  u8 link_quality;
   uint port;
   uint hello_interval;			/* Hello interval, in us */
   uint ihu_interval;			/* IHU interval, in us */

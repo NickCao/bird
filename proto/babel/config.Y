@@ -26,7 +26,7 @@ CF_KEYWORDS(BABEL, INTERFACE, METRIC, RXCOST, HELLO, UPDATE, INTERVAL, PORT,
 	TYPE, WIRED, WIRELESS, RX, TX, BUFFER, PRIORITY, LENGTH, CHECK, LINK,
 	NEXT, HOP, IPV4, IPV6, BABEL_METRIC, SHOW, INTERFACES, NEIGHBORS,
 	ENTRIES, RANDOMIZE, ROUTER, ID, AUTHENTICATION, NONE, MAC, PERMISSIVE,
-	EXTENDED, TUNNEL, RTT, MIN, MAX, DECAY, SEND, TIMESTAMPS, COST, DELAY)
+	EXTENDED, TUNNEL, RTT, MIN, MAX, DECAY, SEND, TIMESTAMPS, COST, DELAY, QUALITY, ETX)
 
 CF_GRAMMAR
 
@@ -84,6 +84,8 @@ babel_iface_finish:
       BABEL_IFACE->hello_interval = BABEL_HELLO_INTERVAL_WIRELESS;
     if (!BABEL_IFACE->rxcost)
       BABEL_IFACE->rxcost = BABEL_RXCOST_WIRELESS;
+    if (!BABEL_IFACE->link_quality)
+      BABEL_IFACE->link_quality = BABEL_IFACE_LINK_QUALITY_ETX;
   }
   else
   {
@@ -93,6 +95,8 @@ babel_iface_finish:
       BABEL_IFACE->rxcost = BABEL_RXCOST_WIRED;
     if (BABEL_IFACE->type == BABEL_IFACE_TYPE_TUNNEL && !BABEL_IFACE->rtt_cost)
       BABEL_IFACE->rtt_cost = BABEL_RXCOST_RTT;
+    if (!BABEL_IFACE->link_quality)
+      BABEL_IFACE->link_quality = BABEL_IFACE_LINK_QUALITY_NONE;
   }
 
   if (BABEL_IFACE->rtt_cost && !BABEL_IFACE->rtt_send)
@@ -156,6 +160,8 @@ babel_iface_item:
  | TX tos { BABEL_IFACE->tx_tos = $2; }
  | TX PRIORITY expr { BABEL_IFACE->tx_priority = $3; }
  | CHECK LINK bool { BABEL_IFACE->check_link = $3; }
+ | LINK QUALITY NONE { BABEL_IFACE->link_quality = BABEL_IFACE_LINK_QUALITY_NONE; }
+ | LINK QUALITY ETX { BABEL_IFACE->link_quality = BABEL_IFACE_LINK_QUALITY_ETX; }
  | NEXT HOP IPV4 ipa { BABEL_IFACE->next_hop_ip4 = $4; if (!ipa_is_ip4($4)) cf_error("Must be an IPv4 address"); }
  | NEXT HOP IPV6 ipa { BABEL_IFACE->next_hop_ip6 = $4; if (!ipa_is_ip6($4)) cf_error("Must be an IPv6 address"); }
  | EXTENDED NEXT HOP bool { BABEL_IFACE->ext_next_hop = $4; }

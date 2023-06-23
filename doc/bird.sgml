@@ -2320,6 +2320,7 @@ protocol babel [<name>] {
 		rx buffer <number>;
 		tx length <number>;
 		check link <switch>;
+		link quality <none|etx>;
 		next hop ipv4 <address>;
 		next hop ipv6 <address>;
 		extended next hop <switch>;
@@ -2422,6 +2423,15 @@ protocol babel [<name>] {
       routes received from them are withdrawn. It is possible that some
       hardware drivers or platforms do not implement this feature. Default:
       yes.
+
+      <tag><label id="babel-link-quality">link quality none|etx </tag>
+      This option specifies the link quality estimation algorithm for computing
+      costs based on Hello history: none or etx. The none (k-out-of-j) algorithm
+      is suitable for wired links that are either up, in which case they only
+      occasionally drop a packet, or down, in which case they drop all packets.
+      The Expected Transmission Cost algorithm, or etx, is suitable for wireless
+      links that exhibit continuous variation of the link quality. Default: etx for
+      wireless interfaces, none otherwise.
 
       <tag><label id="babel-next-hop-ipv4">next hop ipv4 <m/address/</tag>
       Set the next hop address advertised for IPv4 routes advertised on this
