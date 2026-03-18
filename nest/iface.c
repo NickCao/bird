@@ -432,6 +432,8 @@ if_delete(struct iface *old)
   struct iface f = {};
   strncpy(f.name, old->name, sizeof(f.name)-1);
   f.flags = IF_SHUTDOWN;
+  f.master = old->master;
+  f.master_index = old->master_index;
   if_update_locked(&f);
   IFACE_UNLOCK;
 }
